@@ -1,8 +1,9 @@
 package org.example
 
-class Jogo {
-    var titulo = ""
-    var capa = ""
+data class Jogo(
+    val titulo: String,
+    val capa: String
+) {
     var descricao = ""
 
     override fun toString(): String {
@@ -11,6 +12,4 @@ class Jogo {
                 "Capa: $capa \n" +
                 "Descricao: $descricao"
     }
-
-
 }
