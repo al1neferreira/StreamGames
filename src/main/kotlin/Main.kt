@@ -25,14 +25,15 @@ fun main() {
         .send(request, BodyHandlers.ofString())
 
     val json = response.body()
-    println(json)
+   //println(json)
 
     val gson = Gson()
     val meuInfoJogo = gson.fromJson(json, InfoJogo::class.java)
 
+    var meuJogo:Jogo? = null
 
     val resultado = runCatching {
-        val meuJogo = Jogo(
+        meuJogo = Jogo(
             meuInfoJogo.info.title,
             meuInfoJogo.info.thumb
         )
@@ -45,10 +46,16 @@ fun main() {
         val opcao = leitura.nextLine()
         if (opcao.equals("s", true)) {
             println("Insira a descrição personalizada para o jogo")
-            val descricao = leitura.nextLine()
+            val descricaoPersonalizada = leitura.nextLine()
+            meuJogo?.descricao = descricaoPersonalizada
 
         } else {
+            meuJogo?.descricao = meuJogo?.titulo
 
         }
+        println(meuJogo)
+    }
+    resultado.onSuccess {
+        println("Busca finalizada com sucesso!")
     }
 }
