@@ -8,7 +8,15 @@ data class Gamer(
 
     var dataNascimento: String? = null
     var usuario: String? = null
+        set(value){
+            field = value
+            if (idInterno.isNullOrBlank()){
+                criarIdInterna()
+            }
+        }
+
     var idInterno: String? = null
+        private set
 
     constructor(nome: String, email: String, dataNascimento: String, usuario: String) :
             this(nome, email) {
