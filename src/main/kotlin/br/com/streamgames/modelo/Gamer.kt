@@ -1,6 +1,7 @@
 package br.com.streamgames.modelo
 
 import org.example.br.com.streamgames.modelo.Jogo
+import java.util.Scanner
 import kotlin.random.Random
 
 data class Gamer(
@@ -9,9 +10,9 @@ data class Gamer(
 
     var dataNascimento: String? = null
     var usuario: String? = null
-        set(value){
+        set(value) {
             field = value
-            if (idInterno.isNullOrBlank()){
+            if (idInterno.isNullOrBlank()) {
                 criarIdInterna()
             }
         }
@@ -19,7 +20,7 @@ data class Gamer(
     var idInterno: String? = null
         private set
 
-    val jogosBuscados = mutableListOf<Jogo>()
+    val jogosBuscados = mutableListOf<Jogo?>()
 
 
     constructor(nome: String, email: String, dataNascimento: String, usuario: String) :
@@ -30,7 +31,7 @@ data class Gamer(
     }
 
     init {
-        if (nome.isNullOrBlank()){
+        if (nome.isNullOrBlank()) {
             throw IllegalArgumentException("O nome está em branco")
         }
         this.email = validarEmail()
@@ -40,19 +41,41 @@ data class Gamer(
         return "Gamer(nome='$nome', email='$email', dataNascimento=$dataNascimento, usuario=$usuario, idInterno=$idInterno)"
     }
 
-    fun criarIdInterna(){
+    fun criarIdInterna() {
         val numero = Random.nextInt(10000)
         val tag = String.format("%04d", numero)
 
         idInterno = "$usuario#$tag"
     }
+
     fun validarEmail(): String {
         val regex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")
-        if (regex.matches(email)){
+        if (regex.matches(email)) {
             return email
         } else {
             throw IllegalArgumentException("Email invãlido")
         }
     }
 
+    companion object {
+        fun criarGamer(leitura: Scanner): Gamer {
+            println("Boas vindas ao AluGames! Vamos fazer seu cadastro. Digite seu nome:")
+            val nome = leitura.nextLine()
+            println("Digite seu e-mail:")
+            val email = leitura.nextLine()
+            println("Deseja completar seu cadastro com usuário e data de nascimento? (S/N)")
+            val opcao = leitura.nextLine()
+
+            if (opcao.equals("s", true)) {
+                println("Digite a sua data de nascimento no formato (DD/MM/AAAA):")
+                val nascimento = leitura.nextLine()
+                println("Digite seu nome de usuário")
+                val usuario = leitura.nextLine()
+
+                return Gamer(nome, email, nascimento, usuario)
+            } else {
+                return Gamer(nome, email)
+            }
+        }
+    }
 }

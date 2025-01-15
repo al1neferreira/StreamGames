@@ -1,5 +1,6 @@
 package org.example.br.com.streamgames.principal
 
+import br.com.streamgames.modelo.Gamer
 import br.com.streamgames.servicos.ConsumoApi
 import org.example.br.com.streamgames.modelo.Jogo
 import java.util.*
@@ -8,6 +9,11 @@ import java.util.*
 fun main() {
 
     val leitura = Scanner(System.`in`)
+
+    val gamer = Gamer.criarGamer(leitura)
+
+    println("Cadastro concluído com sucesso. Dados do gamer: ")
+    println(gamer)
 
     do {
 
@@ -40,12 +46,16 @@ fun main() {
                 meuJogo?.descricao = meuJogo?.titulo
 
             }
-            println(meuJogo)
+           gamer.jogosBuscados.add(meuJogo)
         }
         println("Deseja buscar um novo jogo? S/N")
         val resposta = leitura.nextLine()
 
     } while (resposta.equals("s", true))
+
+    println("Jogos buscados")
+
+    println(gamer.jogosBuscados)
 
     println("Busca finalizada com sucesso!")
 }
